@@ -118,15 +118,10 @@ export class LicenseManager {
 	}
 
 	private async performLicenseCheck(): Promise<LicenseValidationResult> {
-		try {
-			// Use smart license checking that works offline
-			const isValid = await invoke<boolean>('check_license_smart_command');
-			return { valid: isValid };
-		} catch (error) {
-			const errorMessage = typeof error === 'string' ? error : 'Failed to check license status';
-			return { valid: false, error: errorMessage };
-		}
-	}
+		// License checks disabled for local/desktop build: always allow
+		// If you later want to re-enable checks, restore the invoke call here.
+		return { valid: true } as LicenseValidationResult;
+}
 }
 
 export const licenseManager = LicenseManager.getInstance();
