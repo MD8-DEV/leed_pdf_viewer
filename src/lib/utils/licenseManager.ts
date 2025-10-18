@@ -38,34 +38,14 @@ export class LicenseManager {
 	 * Activate a license key for this device (first time setup)
 	 */
 	async activateLicense(licenseKey: string): Promise<LicenseValidationResult> {
-		if (!isTauri) {
-			return { valid: true }; // Web version doesn't need license activation
-		}
-
-		try {
-			const isValid = await invoke<boolean>('activate_license', { licensekey: licenseKey });
-			return { valid: isValid };
-		} catch (error) {
-			const errorMessage = typeof error === 'string' ? error : 'Failed to activate license key';
-			return { valid: false, error: errorMessage };
-		}
+		return { valid: true };
 	}
 
 	/**
 	 * Validate an already-activated license key with the Polar API
 	 */
 	async validateLicense(licenseKey: string): Promise<LicenseValidationResult> {
-		if (!isTauri) {
-			return { valid: true }; // Web version doesn't need license validation
-		}
-
-		try {
-			const isValid = await invoke<boolean>('validate_license', { licensekey: licenseKey });
-			return { valid: isValid };
-		} catch (error) {
-			const errorMessage = typeof error === 'string' ? error : 'Failed to validate license key';
-			return { valid: false, error: errorMessage };
-		}
+		return { valid: true }; // Web version doesn't need license validation
 	}
 
 	/**
@@ -97,8 +77,8 @@ export class LicenseManager {
 		if (!storedLicenseKey) {
 			// No stored license - needs activation
 			return {
-				valid: false,
-				needsActivation: true,
+				valid: true,
+				needsActivation: false,
 				error: 'No license key found - activation required'
 			};
 		}
